@@ -1,0 +1,339 @@
+/* The opening remains in index.html. These styles belong only to Chapter One. */
+.story-section {
+    --story-paper: #fffaf6;
+    --story-ink: #332626;
+    --story-muted: #78625a;
+    --story-accent: #916b56;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: 120px 32px 110px;
+    background: linear-gradient(180deg, #f5eee8, #f2e7df 55%, #eee0d6);
+    color: var(--story-ink);
+}
+
+.story-heading {
+    max-width: 750px;
+    margin: 0 auto 100px;
+    text-align: center;
+}
+
+.story-eyebrow, .story-date, .memory-eyebrow {
+    font-size: .65rem;
+    line-height: 1.8;
+    letter-spacing: .24em;
+    text-transform: uppercase;
+    color: var(--story-muted);
+}
+
+.story-heading h2 {
+    margin: 20px 0 26px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(3.7rem, 8vw, 7rem);
+    font-weight: 500;
+    line-height: .95;
+    letter-spacing: -.035em;
+}
+
+.story-intro {
+    color: var(--story-muted);
+    font-size: .95rem;
+    line-height: 1.9;
+}
+
+.story-heading::after {
+    content: "";
+    display: block;
+    width: 1px;
+    height: 64px;
+    margin: 38px auto 0;
+    background: linear-gradient(var(--story-accent), transparent);
+}
+
+.story-roadmap {
+    position: relative;
+    max-width: 1040px;
+    margin: auto;
+    padding: 30px 0 0;
+}
+
+.story-path {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.story-path path {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.road-shadow { stroke: #bfa28d; stroke-opacity: .13; stroke-width: 15; }
+.road-line { stroke: #a88973; stroke-opacity: .4; stroke-width: 1.4; }
+.road-progress { stroke: var(--story-accent); stroke-width: 1.8; }
+
+/* Normal document flow lets longer captions and additional stops resize the road. */
+.story-stop {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 100px minmax(0, 1fr);
+    align-items: center;
+    column-gap: 34px;
+    min-height: 540px;
+    padding: 34px 16px;
+    margin-bottom: 110px;
+}
+
+.story-photo {
+    --photo-angle: 9deg;
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: center;
+    position: relative;
+    width: min(100%, 292px);
+    padding: 12px 12px 0;
+    background: var(--story-paper);
+    box-shadow: 0 18px 42px #3a261f24, 0 2px 5px #3a261f0a;
+    transform: rotate(var(--photo-angle));
+    transition: transform .6s ease, box-shadow .6s ease;
+}
+
+.story-stop:nth-of-type(even) .story-photo { grid-column: 3; }
+.story-stop:nth-of-type(even) .story-text { grid-column: 1; }
+.story-stop:nth-of-type(2) .story-photo { --photo-angle: -7deg; }
+.story-stop:nth-of-type(3) .story-photo { --photo-angle: 11deg; }
+.story-stop:nth-of-type(4) .story-photo { --photo-angle: -5deg; }
+.story-stop:nth-of-type(5) .story-photo { --photo-angle: 8deg; }
+.story-stop:nth-of-type(6) .story-photo { --photo-angle: -10deg; }
+.story-stop--rough .story-number { color: #9c8279; }
+.story-stop--flowers { min-height: 600px; margin-bottom: 85px; }
+.story-stop--flowers .story-photo { width: min(100%, 318px); }
+
+.story-photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    filter: saturate(.92) contrast(.98);
+    background: #eee5dd;
+}
+
+/* Keep the complete conversation and video-call screenshots visible. */
+.story-photo--screenshot img { aspect-ratio: auto; }
+
+.photo-caption {
+    display: block;
+    padding: 18px 4px 20px;
+    text-align: center;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: #745b50;
+}
+
+.story-text { grid-column: 3; grid-row: 1; max-width: 360px; }
+.story-number {
+    display: block;
+    margin-bottom: 14px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 3.7rem;
+    line-height: 1;
+    color: #b49b89;
+}
+.story-text h3 {
+    margin: 14px 0 20px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(2.4rem, 3.8vw, 3.4rem);
+    font-weight: 500;
+    line-height: 1.03;
+    letter-spacing: -.025em;
+}
+.story-copy { font-size: .9rem; line-height: 1.95; color: var(--story-muted); }
+.story-note {
+    display: inline-block;
+    margin-top: 22px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    color: #80604f;
+}
+
+.story-marker {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 10px;
+    height: 10px;
+    border: 2px solid #f2e7df;
+    border-radius: 50%;
+    background: var(--story-accent);
+    box-shadow: 0 0 0 1px #916b5680, 0 0 0 7px #916b560c;
+    transform: translate(-50%, -50%);
+}
+
+.memory-open {
+    position: relative;
+    display: block;
+    width: 100%;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    color: #fffaf6;
+}
+.memory-play {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid #ffffffb3;
+    border-radius: 50%;
+    background: #3023239c;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 3px 12px #30232329;
+}
+.memory-play svg { width: 13px; height: 13px; margin-left: 2px; fill: currentColor; }
+.memory-open:focus-visible { outline: 3px solid #916b56; outline-offset: 5px; }
+.story-photo:focus-within { transform: rotate(0deg); }
+@media (hover: hover) {
+    .story-photo:hover { transform: rotate(calc(var(--photo-angle) * .55)); box-shadow: 0 24px 50px #3a261f30; }
+}
+
+.road-ending { position: relative; padding-top: 65px; text-align: center; }
+.ending-dot {
+    display: block;
+    width: 10px;
+    height: 10px;
+    margin: 0 auto 30px;
+    border-radius: 50%;
+    background: var(--story-accent);
+    box-shadow: 0 0 0 8px #916b5610;
+}
+.road-ending h3 {
+    margin: 18px 0 24px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -.025em;
+}
+.road-ending .story-copy { max-width: 440px; margin: auto; }
+.road-ending .ending-note {
+    margin-top: 38px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-style: italic;
+    color: #745b50;
+}
+
+/* JS opts into hiding only while an observer is available. The default is visible. */
+.story-section.reveals-enabled .story-reveal {
+    opacity: 0;
+    translate: 0 24px;
+    transition: opacity 1s ease, translate 1s ease;
+}
+.story-section.reveals-enabled .story-reveal.is-visible { opacity: 1; translate: 0 0; }
+
+.memory-dialog {
+    --story-muted: #c7b4a7;
+    position: fixed;
+    inset: 0;
+    width: min(940px, calc(100% - 40px));
+    max-height: calc(100dvh - 40px);
+    margin: auto;
+    padding: 26px;
+    border: 1px solid #c7b4a733;
+    border-radius: 4px;
+    background: #201a18;
+    color: #fffaf6;
+    box-shadow: 0 35px 110px #0008;
+    overflow: auto;
+}
+.memory-dialog::backdrop { background: #120d0deb; backdrop-filter: blur(12px); }
+.memory-dialog[open] { animation: memory-arrive .4s ease both; }
+.memory-dialog-header { display: flex; align-items: start; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+.memory-dialog h2 {
+    margin-top: 6px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 500;
+    line-height: 1.1;
+}
+.memory-close {
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border: 1px solid #c7b4a755;
+    border-radius: 50%;
+    background: transparent;
+    color: #fffaf6;
+    cursor: pointer;
+}
+.memory-close svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 1.5; }
+.memory-close:hover { background: #ffffff12; }
+.memory-close:focus-visible, .memory-video:focus-visible { outline: 2px solid #dfc1a6; outline-offset: 4px; }
+.memory-video {
+    display: block;
+    width: 100%;
+    max-height: max(160px, calc(100dvh - 245px));
+    object-fit: contain;
+    background: #100d0c;
+}
+.memory-description, .memory-status {
+    margin-top: 16px;
+    font-family: "Inter", sans-serif;
+    font-size: .75rem;
+    line-height: 1.8;
+    color: #c7b4a7;
+}
+.memory-status:empty { display: none; }
+.memory-status a { color: #efcfb6; text-underline-offset: 3px; }
+@keyframes memory-arrive { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Reserve room for the stronger tilt at the narrow end of the two-column layout. */
+@media (min-width: 761px) and (max-width: 900px) {
+    .story-stop--rough .story-photo { width: min(292px, calc(100% - 16px)); }
+}
+
+@media (max-width: 760px) {
+    .story-section { padding: 88px 24px 85px; }
+    .story-heading { margin-bottom: 45px; }
+    .story-heading h2 { font-size: clamp(3.4rem, 12vw, 5.2rem); }
+    .story-intro { font-size: .85rem; }
+    .story-roadmap { padding-top: 24px; }
+    .story-stop {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        gap: 42px;
+        margin-bottom: 90px;
+        padding: 28px 8px 28px 48px;
+    }
+    .story-photo, .story-stop--flowers .story-photo { width: min(calc(100% - 12px), 249px); }
+    .story-stop--rough .story-photo { width: min(calc(100% - 20px), 239px); }
+    .story-text { align-self: center; width: 100%; max-width: 330px; }
+    .story-number { font-size: 2.8rem; margin-bottom: 10px; }
+    .story-text h3 { font-size: clamp(2.15rem, 8vw, 2.8rem); }
+    .story-date { font-size: .6rem; letter-spacing: .17em; }
+    .story-copy { font-size: .86rem; line-height: 1.85; }
+    .photo-caption { font-size: 1.05rem; padding: 15px 0 17px; }
+    .story-marker { left: 18px; top: auto; bottom: 145px; }
+    .road-ending { padding-top: 20px; padding-left: 36px; }
+    .memory-dialog { width: calc(100% - 24px); max-height: calc(100dvh - 24px); padding: 18px; }
+    .memory-video { max-height: max(140px, calc(100dvh - 240px)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .story-section.reveals-enabled .story-reveal { opacity: 1; translate: none; }
+    .story-section *, .memory-dialog { animation: none !important; transition: none !important; }
+}

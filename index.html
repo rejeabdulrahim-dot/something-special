@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>For You</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        /* =========================================
+           GENERAL RESET
+        ========================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+
+            background: #000;
+
+            color: #fff;
+
+            overflow: hidden;
+        }
+
+
+        /* =========================================
+           PASSWORD ENTRY SCREEN
+        ========================================= */
+
+        .entry-screen {
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 1000;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    #111111 0%,
+                    #060606 42%,
+                    #000000 80%
+                );
+
+            transition:
+                opacity 1.8s ease,
+                visibility 1.8s ease,
+                background 1.2s ease;
+        }
+
+
+        .entry-screen::before {
+            content: "";
+
+            position: absolute;
+
+            width: 500px;
+            height: 500px;
+
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, 0.025);
+
+            filter: blur(100px);
+
+            pointer-events: none;
+
+            animation: breathe 5s ease-in-out infinite;
+        }
+
+
+        @keyframes breathe {
+
+            0%,
+            100% {
+                opacity: 0.25;
+                transform: scale(0.95);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(1.05);
+            }
+
+        }
+
+
+        .entry-content {
+            position: relative;
+
+            z-index: 2;
+
+            width: min(90%, 500px);
+
+            text-align: center;
+
+            opacity: 0;
+
+            animation: revealContent 2.2s ease forwards;
+
+            animation-delay: 0.6s;
+        }
+
+
+        @keyframes revealContent {
+
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+
+        .intro-text {
+            margin-bottom: 24px;
+
+            font-size: 0.72rem;
+
+            font-weight: 400;
+
+            letter-spacing: 0.32rem;
+
+            text-transform: uppercase;
+
+            color: rgba(255, 255, 255, 0.42);
+        }
+
+
+        .entry-title {
+            font-family: "Cormorant Garamond", serif;
+
+            font-size: clamp(3rem, 8vw, 5rem);
+
+            font-weight: 500;
+
+            line-height: 0.95;
+
+            letter-spacing: -0.03em;
+
+            margin-bottom: 22px;
+
+            color: #f5f2ed;
+        }
+
+
+        .entry-description {
+            max-width: 390px;
+
+            margin: 0 auto 38px;
+
+            font-size: 0.88rem;
+
+            font-weight: 300;
+
+            line-height: 1.8;
+
+            color: rgba(255, 255, 255, 0.48);
+        }
+
+
+        /* =========================================
+           PASSWORD
+        ========================================= */
+
+        .password-container {
+            position: relative;
+
+            max-width: 320px;
+
+            margin: auto;
+        }
+
+
+        .password-input {
+            width: 100%;
+
+            padding: 15px 18px;
+
+            border: none;
+
+            border-bottom:
+                1px solid rgba(255, 255, 255, 0.22);
+
+            outline: none;
+
+            background: transparent;
+
+            text-align: center;
+
+            font-family: "Inter", sans-serif;
+
+            font-size: 0.92rem;
+
+            letter-spacing: 0.18rem;
+
+            color: #fff;
+
+            transition: border-color 0.4s ease;
+        }
+
+
+        .password-input::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+
+            letter-spacing: 0.08rem;
+        }
+
+
+        .password-input:focus {
+            border-color: rgba(255, 255, 255, 0.65);
+        }
+
+
+        /* =========================================
+           ENTER BUTTON
+        ========================================= */
+
+        .enter-button {
+            margin-top: 25px;
+
+            padding: 12px 30px;
+
+            border:
+                1px solid rgba(255, 255, 255, 0.3);
+
+            border-radius: 100px;
+
+            background: transparent;
+
+            color: rgba(255, 255, 255, 0.75);
+
+            font-family: "Inter", sans-serif;
+
+            font-size: 0.72rem;
+
+            letter-spacing: 0.2rem;
+
+            text-transform: uppercase;
+
+            cursor: pointer;
+
+            transition:
+                background 0.4s ease,
+                color 0.4s ease,
+                border-color 0.4s ease,
+                transform 0.3s ease;
+        }
+
+
+        .enter-button:hover {
+            background: #f3eee6;
+
+            color: #111;
+
+            border-color: #f3eee6;
+
+            transform: translateY(-2px);
+        }
+
+
+        /* =========================================
+           ERROR MESSAGE
+        ========================================= */
+
+        .error-message {
+            height: 18px;
+
+            margin-top: 17px;
+
+            font-size: 0.72rem;
+
+            letter-spacing: 0.04rem;
+
+            color: rgba(255, 145, 145, 0.75);
+
+            opacity: 0;
+
+            transition: opacity 0.35s ease;
+        }
+
+
+        .error-message.show {
+            opacity: 1;
+        }
+
+
+        .shake {
+            animation: shake 0.45s ease;
+        }
+
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-7px);
+            }
+
+            40% {
+                transform: translateX(7px);
+            }
+
+            60% {
+                transform: translateX(-5px);
+            }
+
+            80% {
+                transform: translateX(5px);
+            }
+
+        }
+
+
+        /* =========================================
+           WHITE FLASH / UNLOCK
+        ========================================= */
+
+        .entry-screen.unlocking {
+            background: #fff;
+        }
+
+
+        .entry-screen.unlocking .entry-content {
+            opacity: 0;
+
+            transform: scale(0.98);
+
+            transition:
+                opacity 0.8s ease,
+                transform 0.8s ease;
+        }
+
+
+        .entry-screen.hidden {
+            opacity: 0;
+
+            visibility: hidden;
+
+            pointer-events: none;
+        }
+
+
+        /* =========================================
+           HERO SECTION
+        ========================================= */
+
+        .hero {
+            position: relative;
+
+            width: 100%;
+
+            min-height: 100vh;
+            min-height: 100svh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            overflow: hidden;
+
+            background: #efe1d8;
+
+            opacity: 0;
+
+            transition: opacity 2s ease;
+        }
+
+
+        .hero.visible {
+            opacity: 1;
+        }
+
+
+        /* =========================================
+           MINIMAX BACKGROUND VIDEO
+        ========================================= */
+
+        .hero-video {
+            position: absolute;
+
+            top: 50%;
+            left: 50%;
+
+            width: 100%;
+            height: 100%;
+
+            transform:
+                translate(-50%, -50%)
+                scale(1.03);
+
+            object-fit: cover;
+
+            object-position: center;
+
+            z-index: 0;
+        }
+
+
+        /*
+            Soft overlay.
+
+            The video remains bright and beautiful,
+            but the counter stays readable.
+        */
+
+        .hero-overlay {
+            position: absolute;
+
+            inset: 0;
+
+            z-index: 1;
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    rgba(15, 8, 8, 0.10) 0%,
+                    rgba(15, 8, 8, 0.20) 50%,
+                    rgba(15, 8, 8, 0.30) 100%
+                );
+        }
+
+
+        /*
+            Extra soft light around the centre
+            behind the 365.
+        */
+
+        .hero-glow {
+            position: absolute;
+
+            z-index: 1;
+
+            top: 50%;
+            left: 50%;
+
+            width: min(700px, 90vw);
+            height: min(700px, 90vw);
+
+            transform:
+                translate(-50%, -50%);
+
+            border-radius: 50%;
+
+            background:
+                rgba(255, 245, 236, 0.10);
+
+            filter: blur(80px);
+
+            pointer-events: none;
+        }
+
+
+        /* =========================================
+           HERO CONTENT
+        ========================================= */
+
+        .hero-content {
+            position: relative;
+
+            z-index: 5;
+
+            width: min(92%, 1000px);
+
+            padding: 40px 20px;
+
+            text-align: center;
+
+            color: #fff;
+
+            text-shadow:
+                0 2px 18px rgba(0, 0, 0, 0.24);
+        }
+
+
+        /* =========================================
+           365 COUNTER
+        ========================================= */
+
+        .day-number {
+            font-family:
+                "Cormorant Garamond",
+                serif;
+
+            font-size:
+                clamp(8rem, 25vw, 16rem);
+
+            font-weight: 500;
+
+            line-height: 0.8;
+
+            letter-spacing: -0.06em;
+
+            color: #fff;
+
+            font-variant-numeric:
+                tabular-nums;
+
+            text-shadow:
+                0 4px 35px
+                rgba(0, 0, 0, 0.25);
+        }
+
+
+        .day-number.final-number {
+            animation:
+                final365 1.7s ease;
+        }
+
+
+        @keyframes final365 {
+
+            0% {
+                transform: scale(1);
+            }
+
+            35% {
+                transform: scale(1.07);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+
+        }
+
+
+        /* =========================================
+           DAYS OF US
+        ========================================= */
+
+        .days-label {
+            margin-top: 38px;
+
+            font-family:
+                "Cormorant Garamond",
+                serif;
+
+            font-size:
+                clamp(2.3rem, 6vw, 4.5rem);
+
+            font-weight: 500;
+
+            letter-spacing: -0.01em;
+
+            color: #fff;
+
+            opacity: 0;
+
+            transform: translateY(18px);
+
+            transition:
+                opacity 1.5s ease,
+                transform 1.5s ease;
+        }
+
+
+        .days-label.show {
+            opacity: 1;
+
+            transform: translateY(0);
+        }
+
+
+        /* =========================================
+           ANNIVERSARY DATE
+        ========================================= */
+
+        .anniversary-dates {
+            margin-top: 18px;
+
+            font-size: 0.72rem;
+
+            font-weight: 400;
+
+            letter-spacing: 0.18rem;
+
+            text-transform: uppercase;
+
+            color:
+                rgba(255, 255, 255, 0.78);
+
+            opacity: 0;
+
+            transform: translateY(12px);
+
+            transition:
+                opacity 1.6s ease,
+                transform 1.6s ease;
+        }
+
+
+        .anniversary-dates.show {
+            opacity: 1;
+
+            transform: translateY(0);
+        }
+
+
+        /* =========================================
+           SCROLL INDICATOR
+        ========================================= */
+
+        .scroll-indicator {
+            position: absolute;
+
+            left: 50%;
+            bottom: 28px;
+
+            z-index: 5;
+
+            transform:
+                translateX(-50%);
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            gap: 10px;
+
+            color:
+                rgba(255, 255, 255, 0.72);
+
+            opacity: 0;
+
+            transition:
+                opacity 1.5s ease;
+        }
+
+
+        .scroll-indicator.show {
+            opacity: 1;
+        }
+
+
+        .scroll-text {
+            font-size: 0.58rem;
+
+            letter-spacing: 0.22rem;
+
+            text-transform: uppercase;
+        }
+
+
+        .scroll-line {
+            width: 1px;
+
+            height: 38px;
+
+            background:
+                rgba(255, 255, 255, 0.6);
+
+            transform-origin: top;
+
+            animation:
+                scrollLine 2s ease-in-out infinite;
+        }
+
+
+        @keyframes scrollLine {
+
+            0% {
+                transform: scaleY(0);
+                opacity: 0;
+            }
+
+            35% {
+                transform: scaleY(1);
+                opacity: 1;
+            }
+
+            75% {
+                transform: scaleY(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scaleY(1);
+                opacity: 0;
+            }
+
+        }
+
+
+        /* =========================================
+           TEMPORARY NEXT SECTION
+
+           This is only here so that scrolling
+           actually works.
+
+           We'll build this section next.
+        ========================================= */
+
+        .next-section {
+            min-height: 100vh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 80px 20px;
+
+            background: #f5eee8;
+
+            color: #302323;
+
+            text-align: center;
+        }
+
+
+        .next-section-content {
+            max-width: 750px;
+        }
+
+
+        .next-section-small {
+            margin-bottom: 20px;
+
+            font-size: 0.68rem;
+
+            letter-spacing: 0.25rem;
+
+            text-transform: uppercase;
+
+            color: rgba(48, 35, 35, 0.45);
+        }
+
+
+        .next-section h2 {
+            font-family:
+                "Cormorant Garamond",
+                serif;
+
+            font-size:
+                clamp(3rem, 8vw, 6rem);
+
+            font-weight: 500;
+
+            line-height: 1;
+
+            margin-bottom: 25px;
+        }
+
+
+        .next-section p {
+            max-width: 540px;
+
+            margin: auto;
+
+            font-size: 0.95rem;
+
+            line-height: 1.8;
+
+            color:
+                rgba(48, 35, 35, 0.65);
+        }
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 600px) {
+
+            .entry-content {
+                width: 88%;
+            }
+
+
+            .intro-text {
+                font-size: 0.62rem;
+
+                letter-spacing: 0.24rem;
+            }
+
+
+            .entry-description {
+                font-size: 0.82rem;
+
+                padding: 0 10px;
+            }
+
+
+            .password-container {
+                max-width: 280px;
+            }
+
+
+            .hero-content {
+                padding:
+                    30px 15px 80px;
+            }
+
+
+            .day-number {
+                font-size:
+                    clamp(7rem, 36vw, 11rem);
+            }
+
+
+            .days-label {
+                margin-top: 30px;
+
+                font-size:
+                    clamp(2.2rem, 11vw, 3.5rem);
+            }
+
+
+            .anniversary-dates {
+                font-size: 0.58rem;
+
+                letter-spacing: 0.11rem;
+
+                line-height: 1.7;
+            }
+
+
+            .scroll-indicator {
+                bottom: 18px;
+            }
+
+        }
+
+
+        /* =========================================
+           REDUCED MOTION
+        ========================================= */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration:
+                    0.01ms !important;
+
+                animation-iteration-count:
+                    1 !important;
+
+                transition-duration:
+                    0.01ms !important;
+            }
+
+        }
+
+    </style>
+    <link rel="stylesheet" href="story.css">
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         DARK PASSWORD SCREEN
+    ========================================== -->
+
+    <section
+        class="entry-screen"
+        id="entryScreen"
+    >
+
+        <div class="entry-content">
+
+            <p class="intro-text">
+                For one person only
+            </p>
+
+
+            <h1 class="entry-title">
+                This is for you.
+            </h1>
+
+
+            <p class="entry-description">
+                Some things aren't meant for everyone to see.
+                This is one of them.
+            </p>
+
+
+            <div
+                class="password-container"
+                id="passwordContainer"
+            >
+
+                <input
+                    type="password"
+                    id="passwordInput"
+                    class="password-input"
+                    placeholder="Enter our code"
+                    autocomplete="off"
+                >
+
+
+                <button
+                    class="enter-button"
+                    id="enterButton"
+                    type="button"
+                >
+                    Enter
+                </button>
+
+
+                <p
+                    class="error-message"
+                    id="errorMessage"
+                >
+                    That's not it.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         MINIMAX VIDEO HERO
+    ========================================== -->
+
+    <main
+        class="hero"
+        id="hero"
+    >
+
+        <!--
+            IMPORTANT:
+
+            Put your Minimax video in the
+            same folder as index.html.
+
+            Rename it:
+
+            minimax-hero.mp4
+        -->
+
+        <video
+            class="hero-video"
+            id="heroVideo"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+        >
+
+            <source
+                src="minimax-hero.mp4"
+                type="video/mp4"
+            >
+
+        </video>
+
+
+        <!-- Readability overlay -->
+
+        <div class="hero-overlay"></div>
+
+
+        <!-- Soft glow -->
+
+        <div class="hero-glow"></div>
+
+
+        <!-- Main hero text -->
+
+        <div class="hero-content">
+
+            <div
+                class="day-number"
+                id="dayNumber"
+            >
+                0
+            </div>
+
+
+            <div
+                class="days-label"
+                id="daysLabel"
+            >
+                Days of Us
+            </div>
+
+
+            <div
+                class="anniversary-dates"
+                id="anniversaryDates"
+            >
+                14 September 2025 — 14 September 2026
+            </div>
+
+        </div>
+
+
+        <!-- Appears only after the intro -->
+
+        <div
+            class="scroll-indicator"
+            id="scrollIndicator"
+        >
+
+            <span class="scroll-text">
+                Our Story
+            </span>
+
+            <span class="scroll-line"></span>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =========================================
+     OUR STORY / ROADMAP
+========================================== -->
+
+<section class="story-section" id="ourStory" aria-labelledby="storyTitle">
+    <header class="story-heading story-reveal">
+        <p class="story-eyebrow">Chapter One</p>
+        <h2 id="storyTitle">How it started.</h2>
+        <p class="story-intro">It wasn't a straight road.<br>I don't think the best stories ever are.</p>
+    </header>
+
+    <div class="story-roadmap">
+        <svg class="story-path" aria-hidden="true" focusable="false">
+            <path class="road-shadow" />
+            <path class="road-line" />
+            <path class="road-progress" />
+        </svg>
+
+        <!-- Each article is one editable memory. Duplicate or remove an article;
+             the layout, alternating photos and measured road follow automatically.
+             Copy is provisional; the first-message date is visible in its image. -->
+        <article class="story-stop story-reveal" aria-labelledby="firstMessageTitle">
+            <span class="story-marker" aria-hidden="true"></span>
+            <figure class="story-photo story-photo--screenshot">
+                <img src="images/web/Kisha_first_message_web.jpg" width="720" height="1560"
+                     alt="Our first Instagram conversation, beginning with Salam kisha."
+                     loading="lazy" decoding="async">
+                <figcaption class="photo-caption">One little hello.</figcaption>
+            </figure>
+            <div class="story-text">
+                <span class="story-number" aria-hidden="true">01</span>
+                <p class="story-date"><time datetime="2025-09-08">08 September 2025</time></p>
+                <h3 id="firstMessageTitle">The first message.</h3>
+                <p class="story-copy">Somehow, something as simple as one conversation became the beginning of everything that came after it.</p>
+                <span class="story-note">We had no idea, did we?</span>
+            </div>
+        </article>
+
+        <article class="story-stop story-reveal" aria-labelledby="earlyCallsTitle">
+            <span class="story-marker" aria-hidden="true"></span>
+            <figure class="story-photo story-photo--screenshot">
+                <img src="images/web/Kisha_filter1_web.jpg" width="720" height="1560"
+                     alt="Kisha making a playful face with a filter during one of our video calls."
+                     loading="lazy" decoding="async">
+                <figcaption class="photo-caption">A little closer, every call.</figcaption>
+            </figure>
+            <div class="story-text">
+                <span class="story-number" aria-hidden="true">02</span>
+                <p class="story-date">Not long after</p>
+                <h3 id="earlyCallsTitle">Just one more call.</h3>
+                <p class="story-copy">Somewhere between the conversations and the laughter, getting to know you became getting used to having you in my life.</p>
+            </div>
+        </article>
+
+        <article class="story-stop story-stop--rough story-reveal" aria-labelledby="roughTurnTitle">
+            <span class="story-marker" aria-hidden="true"></span>
+            <figure class="story-photo story-photo--screenshot">
+                <img src="images/web/kisha_angry_web.jpg" width="720" height="1560"
+                     alt="Kisha sitting with her arms folded during one of our video calls."
+                     loading="lazy" decoding="async">
+                <figcaption class="photo-caption">A bend in the road.</figcaption>
+            </figure>
+            <div class="story-text">
+                <span class="story-number" aria-hidden="true">03</span>
+                <p class="story-date">The less easy parts</p>
+                <h3 id="roughTurnTitle">We had our moments too.</h3>
+                <p class="story-copy">Not every part of our story was easy. There were rough turns too, and they belong to this year just as much as the beautiful moments.</p>
+                <span class="story-note">The road didn't end here.</span>
+            </div>
+        </article>
+
+        <article class="story-stop story-reveal" aria-labelledby="keptGoingTitle">
+            <span class="story-marker" aria-hidden="true"></span>
+            <figure class="story-photo story-photo--screenshot">
+                <img src="images/web/Kisha_peace_sign_web.jpg" width="720" height="1560"
+                     alt="Kisha giving a peace sign during a video call with me."
+                     loading="lazy" decoding="async">
+                <figcaption class="photo-caption">Still finding our way.</figcaption>
+            </figure>
+            <div class="story-text">
+                <span class="story-number" aria-hidden="true">04</span>
+                <p class="story-date">A little further along</p>
+                <h3 id="keptGoingTitle">And we kept going.</h3>
+                <p class="story-copy">Our story kept unfolding. More conversations, more ordinary days, more little moments that became ours.</p>
+            </div>
+        </article>
+
+        <article class="story-stop story-stop--birthday story-reveal" aria-labelledby="birthdayTitle">
+            <span class="story-marker" aria-hidden="true"></span>
+            <figure class="story-photo">
+                <button class="memory-open" id="birthdayMemoryOpen" type="button"
+                        aria-label="Play Kisha's birthday memory: me singing happy birthday to you"
+                        aria-haspopup="dialog" aria-controls="birthdayMemory">
+                    <img src="images/web/kisha_birthday_pic_web.jpg" width="900" height="1200"
+                         alt="Kisha holding her birthday gifts."
+                         loading="lazy" decoding="async">
+                    <span class="memory-play" aria-hidden="true">
+                        <svg viewBox="0 0 16 16"><path d="M4 2 L14 8 L4 14 Z" /></svg>
+                    </span>
+                </button>
+                <figcaption class="photo-caption">A song, just for you.</figcaption>
+            </figure>
+            <div class="story-text">
+                <span class="story-number" aria-hidden="true">05</span>
+                <p class="story-date">Your own little celebration</p>
+                <h3 id="birthdayTitle">Kisha's birthday.</h3>
+                <p class="story-copy">Of all the things I could give you, here's a little piece of that day. My voice, your birthday, and a memory I wanted us to keep.</p>
+                <span class="story-note">Open the photo. This one has a song.</span>
+            </div>
+        </article>
+
+        <article class="story-stop story-stop--flowers story-reveal" aria-labelledby="flowersTitle">
+            <span class="story-marker" aria-hidden="true"></span>
+            <figure class="story-photo">
+                <img src="images/web/Kisha_flowers2_web.jpg" width="900" height="1200"
+                     alt="Kisha in her chef uniform, holding a bouquet of pink and white flowers."
+                     loading="lazy" decoding="async">
+                <figcaption class="photo-caption">A little more colour.</figcaption>
+            </figure>
+            <div class="story-text">
+                <span class="story-number" aria-hidden="true">06</span>
+                <p class="story-date">Towards today</p>
+                <h3 id="flowersTitle">And there was beauty, too.</h3>
+                <p class="story-copy">A few flowers. A moment worth keeping. One more beautiful part of a year that held so much.</p>
+                <span class="story-note">This belongs here, too.</span>
+            </div>
+        </article>
+
+        <div class="road-ending story-reveal" aria-labelledby="anniversaryTitle">
+            <span class="ending-dot" aria-hidden="true"></span>
+            <p class="story-date"><time datetime="2026-09-14">14 September 2026</time></p>
+            <h3 id="anniversaryTitle">365 days later.</h3>
+            <p class="story-copy">The road wasn't perfectly straight.<br>It wasn't supposed to be.<br>But through every turn, somehow,<br>it kept leading us here.</p>
+            <p class="ending-note">And we're still going.</p>
+        </div>
+    </div>
+</section>
+
+<dialog class="memory-dialog" id="birthdayMemory"
+        aria-labelledby="memoryTitle" aria-describedby="memoryDescription">
+    <div class="memory-dialog-header">
+        <div>
+            <p class="memory-eyebrow">A memory to keep</p>
+            <h2 id="memoryTitle">Happy birthday, Kisha.</h2>
+        </div>
+        <button class="memory-close" type="button" aria-label="Close birthday memory" autofocus>
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 4 12 12 M16 4 4 16" /></svg>
+        </button>
+    </div>
+    <video class="memory-video" controls playsinline preload="none"
+           data-src="renamed_videos/kishas_birthday_web.mp4"
+           aria-label="A personal video of me singing happy birthday to Kisha">
+        Your browser doesn't support this video.
+        <a href="renamed_videos/kishas_birthday_web.mp4">Open the birthday video</a>.
+    </video>
+    <p class="memory-description" id="memoryDescription">A song, just for you. Sound is part of this memory.</p>
+    <p class="memory-status" role="status" aria-live="polite"></p>
+</dialog>
+
+
+
+    <script>
+
+        /* =========================================
+           PASSWORD SETTING
+        ========================================== */
+
+        const correctPassword = "365";
+
+
+        /* =========================================
+           ELEMENTS
+        ========================================== */
+
+        const entryScreen =
+            document.getElementById(
+                "entryScreen"
+            );
+
+
+        const passwordInput =
+            document.getElementById(
+                "passwordInput"
+            );
+
+
+        const enterButton =
+            document.getElementById(
+                "enterButton"
+            );
+
+
+        const errorMessage =
+            document.getElementById(
+                "errorMessage"
+            );
+
+
+        const passwordContainer =
+            document.getElementById(
+                "passwordContainer"
+            );
+
+
+        const hero =
+            document.getElementById(
+                "hero"
+            );
+
+
+        const heroVideo =
+            document.getElementById(
+                "heroVideo"
+            );
+
+
+        const dayNumber =
+            document.getElementById(
+                "dayNumber"
+            );
+
+
+        const daysLabel =
+            document.getElementById(
+                "daysLabel"
+            );
+
+
+        const anniversaryDates =
+            document.getElementById(
+                "anniversaryDates"
+            );
+
+
+        const scrollIndicator =
+            document.getElementById(
+                "scrollIndicator"
+            );
+
+
+        let counterStarted = false;
+
+
+
+        /* =========================================
+           CHECK PASSWORD
+        ========================================== */
+
+        function checkPassword() {
+
+            const enteredPassword =
+                passwordInput.value.trim();
+
+
+            if (
+                enteredPassword ===
+                correctPassword
+            ) {
+
+                unlockWebsite();
+
+            } else {
+
+                showError();
+
+            }
+
+        }
+
+
+
+        /* =========================================
+           WRONG PASSWORD
+        ========================================== */
+
+        function showError() {
+
+            errorMessage.classList.add(
+                "show"
+            );
+
+
+            passwordContainer.classList.remove(
+                "shake"
+            );
+
+
+            void passwordContainer.offsetWidth;
+
+
+            passwordContainer.classList.add(
+                "shake"
+            );
+
+
+            passwordInput.value = "";
+
+
+            passwordInput.focus();
+
+        }
+
+
+
+        /* =========================================
+           UNLOCK
+        ========================================== */
+
+        function unlockWebsite() {
+
+            errorMessage.classList.remove(
+                "show"
+            );
+
+
+            passwordInput.disabled = true;
+
+            enterButton.disabled = true;
+
+
+            /*
+                Attempt to begin the video.
+
+                It is muted, so modern browsers
+                should allow autoplay.
+            */
+
+            heroVideo.play().catch(
+                function () {
+
+                    /*
+                        If autoplay fails for some
+                        unusual browser reason,
+                        the hero still works.
+                    */
+
+                }
+            );
+
+
+            /*
+                Turn the black screen white.
+            */
+
+            entryScreen.classList.add(
+                "unlocking"
+            );
+
+
+            /*
+                Fade the Minimax hero in
+                underneath the white screen.
+            */
+
+            setTimeout(
+                function () {
+
+                    hero.classList.add(
+                        "visible"
+                    );
+
+                },
+                450
+            );
+
+
+            /*
+                Remove entry screen.
+            */
+
+            setTimeout(
+                function () {
+
+                    entryScreen.classList.add(
+                        "hidden"
+                    );
+
+
+                    document.body.style.overflow =
+                        "auto";
+
+                },
+                1700
+            );
+
+
+            /*
+                Start the 0 -> 365 animation.
+            */
+
+            setTimeout(
+                function () {
+
+                    startDayCounter();
+
+                },
+                1950
+            );
+
+        }
+
+
+
+        /* =========================================
+           0 -> 365 COUNTER
+        ========================================== */
+
+        function startDayCounter() {
+
+            if (counterStarted) {
+
+                return;
+
+            }
+
+
+            counterStarted = true;
+
+
+            let currentDay = 0;
+
+
+
+            function countNextDay() {
+
+                currentDay++;
+
+
+                dayNumber.textContent =
+                    currentDay;
+
+
+
+                /*
+                    At first, time flies.
+
+                    As we approach the present,
+                    time begins slowing down.
+                */
+
+
+                let delay = 5;
+
+
+
+                if (
+                    currentDay < 220
+                ) {
+
+                    delay = 4;
+
+                }
+
+
+                else if (
+                    currentDay < 300
+                ) {
+
+                    delay = 7;
+
+                }
+
+
+                else if (
+                    currentDay < 330
+                ) {
+
+                    delay = 14;
+
+                }
+
+
+                else if (
+                    currentDay < 345
+                ) {
+
+                    delay = 25;
+
+                }
+
+
+                else if (
+                    currentDay < 355
+                ) {
+
+                    delay = 50;
+
+                }
+
+
+                else if (
+                    currentDay < 360
+                ) {
+
+                    delay = 110;
+
+                }
+
+
+                else if (
+                    currentDay === 360
+                ) {
+
+                    delay = 180;
+
+                }
+
+
+                else if (
+                    currentDay === 361
+                ) {
+
+                    delay = 260;
+
+                }
+
+
+                else if (
+                    currentDay === 362
+                ) {
+
+                    delay = 400;
+
+                }
+
+
+                else if (
+                    currentDay === 363
+                ) {
+
+                    delay = 650;
+
+                }
+
+
+                else if (
+                    currentDay === 364
+                ) {
+
+                    delay = 900;
+
+                }
+
+
+
+                if (
+                    currentDay < 365
+                ) {
+
+                    setTimeout(
+                        countNextDay,
+                        delay
+                    );
+
+                }
+
+                else {
+
+                    finishCounter();
+
+                }
+
+            }
+
+
+            countNextDay();
+
+        }
+
+
+
+        /* =========================================
+           FINAL 365 REVEAL
+        ========================================== */
+
+        function finishCounter() {
+
+            /*
+                Give 365 its own visual emphasis.
+            */
+
+            dayNumber.classList.add(
+                "final-number"
+            );
+
+
+            /*
+                Don't immediately explain 365.
+
+                Give her time to actually
+                register the number first.
+            */
+
+            setTimeout(
+                function () {
+
+                    daysLabel.classList.add(
+                        "show"
+                    );
+
+                },
+                1300
+            );
+
+
+            /*
+                Then reveal the anniversary
+                dates.
+            */
+
+            setTimeout(
+                function () {
+
+                    anniversaryDates.classList.add(
+                        "show"
+                    );
+
+                },
+                2400
+            );
+
+
+            /*
+                Finally tell the viewer that
+                there is more below.
+
+                This makes the counter sequence
+                feel complete before continuing.
+            */
+
+            setTimeout(
+                function () {
+
+                    scrollIndicator.classList.add(
+                        "show"
+                    );
+
+                },
+                3800
+            );
+
+        }
+
+
+
+        /* =========================================
+           EVENTS
+        ========================================== */
+
+        enterButton.addEventListener(
+            "click",
+            checkPassword
+        );
+
+
+        passwordInput.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "Enter"
+                ) {
+
+                    checkPassword();
+
+                }
+
+            }
+        );
+
+    </script>
+
+    <script src="story.js" defer></script>
+</body>
+</html>
+
